@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DerpyIRC</title>
+		<link rel="stylesheet" type="text/css" href="app.css">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="" id="theme-sheet">
+		<style id="custom-styles">
+			#output .text{
+				margin-left: 115px;
+			}
+		</style>
+	</head>
+	<!-- Codepony LunaSquee -->
+	<body>
+		<div id="content">
+			<header>
+				<ul class="frames pills"></ul>
+				<div class="icon"></div>
+				<div class="icon settings opensettings"></div>
+			</header>
+
+			<div id="frame">
+				<div id="sidebar">
+					<div class="actions" id="nickcount"></div>
+					<div class="nicks"></div>
+				</div>
+				<div class="wrapper">
+					<div id="output">
+						<div id="topic"></div>
+						<div id="messages"></div>
+						<div class="gutter"></div>
+					</div>
+				</div>
+				<input id="prime-input" type="text" placeholder="Enter message here...">
+			</div>
+			
+			<div id="settingsframe" style="display: none">
+				<div class="wrapper">
+					<h2>DerpyIRC Settings</h2><br>
+					<h5>Timestamps</h5><br>
+					<label for="stn-timestamp-show" style="width: 160px;">Show timestamps</label>
+					<input id="stn-timestamp-show" type="checkbox" style="margin: 8px;"><br><br>
+					<label for="stn-timestamp-utc" style="width: 160px;">Use UTC</label>
+					<input id="stn-timestamp-utc" type="checkbox" style="margin: 8px;"><br><br>
+					<label for="stn-timestamp" style="width: 160px;">Timestamp format</label>
+					<input id="stn-timestamp" type="text"><br><br>
+					<h5>Message types</h5><br>
+					<i>Here you can configure which messages you see. Click on a message type to toggle it</i><br>
+					<div id="messageTypes"></div><br>
+					<h5>Themes</h5><br>
+					<div class="themelist">
+						<div class="theme selected">
+							<span class="themeview"></span>
+							<span class="themename">Default</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="connect" class="modal">
+			<div class="modal-body">
+				<form>
+					<div class="clearfix">
+						<label for="connect-nick">Nickname</label>
+						<input type="text" id="connect-nick" name="nick">
+					</div>
+					<div class="clearfix">
+						<a id="nickserv-ident" href="#" onclick="$('#nickserv-pass-container').slideToggle();">Use a NickServ password</a><br>
+						<div id="nickserv-pass-container" style="display:none">
+							<label for="nickserv-pass">Password</label>
+							<input type="password" id="nickserv-pass" name="password">
+						</div>
+					</div>
+					<div class="clearfix">
+						<label for="connect-channels">Channel(s)</label>
+						<input type="text" id="connect-channels" name="channels">
+					</div>
+					<b id="expand" class="clickable">Server and Port <div id="load-more-arrow">▶</div></b>
+					<div class="clearfix" id="serverfix" style="display:none;">
+						<label for="connect-server">IRC Server</label>
+						<input type="text" id="connect-server" name="server" value="irc.bsnet.se">
+						<label for="connect-server-port">Port</label>
+						<input type="text" id="connect-server-port" name="server-port" value="6667">
+						<label for="connect-secure">SSL</label> 
+						<input type="checkbox" id="connect-secure" name="secure" style="float: left; margin: 7px 7px 7px 15px;">
+					</div>
+					<a href="#" class="btn primary customButton">Connect</a>
+				</form>
+			</div>
+		</div>
+		
+		<!-- UI stuff -->
+		<div id="dialog"></div>
+		
+		<!-- Mustache templates -->
+		<script id="message-tmpl" type="text/html">
+			{{#timestamp}}<span class="timestamp">{{timestamp}}</span>{{/timestamp}}{{#sender}}<span class="sender">{{sender}}</span>{{/sender}}
+			<span class="text {{^sender}}no-sender{{/sender}}">{{{text}}</span>
+		</script>
+
+		<script id="tab-tmpl" type="text/html">
+			<a class="name {{type}}">{{text}}</a>
+			{{^isStatus}}
+				<span class="close-frame"></span>
+			{{/isStatus}}
+		</script>
+		
+		<script id="type-tmpl" type="text/html">
+			<div class="messageType {{#o}}disabled{{/o}}" data-message-type="{{type}}">
+				<span class="text">{{type}}</span><span class="typeicon"></span>
+			</div>
+		</script>
+		
+		<!-- JAVASCRIPT -->
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+		<script src="js/mustache.js"></script>
+		<script src="js/underscore-min.js"></script>
+		<script src="js/backbone.js"></script>
+
+		<script src="js/util.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
