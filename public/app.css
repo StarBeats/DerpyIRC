@@ -511,7 +511,6 @@ label{
 	-o-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
-
 .typeicon::before, .typeicon::after{
 	content: "";
 	position: absolute;

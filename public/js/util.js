@@ -215,8 +215,9 @@ CSSRuleList.prototype.getRuleBySelector = function(rule) {
 window.irc = (function(module) {
     module.util = {
         // Replaces oldString with newString at beginning of text
-		variables: {'dateFormat':'HH:mm:ss', 'showDate':true, 'dateUTC':false},
+		variables: {'dateFormat':'HH:mm:ss', 'showDate':true, 'dateUTC':false, 'theme':"default"},
 		messageTypes: {'join':true, 'part':true, 'nick':true, 'notice':true, 'quit':true, 'mode':true, 'topic':true, 'kick':true},
+        themes: {"default":["", "Default", true, "white"], "night":["/themes/night.css", "Night", false, "black"]},
 		toggleTypes: function(type) {
 			if(this.messageTypes[type] == null) 
 				return;

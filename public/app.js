@@ -577,9 +577,16 @@ $(function() {
                 var it = localStorage.getItem("settings");
                 if(it) {
                     var parsed = JSON.parse(it);
-                    if(parsed.dateFormat!=null && parsed.showDate!=null && parsed.dateUTC!=null)
+                    if(parsed.dateFormat!=null && parsed.showDate!=null && parsed.dateUTC!=null && parsed.theme!=null)
                         irc.util.variables = parsed;
                 }
+            }
+            if(irc.util.variables.theme !== "default") {
+                var theme = irc.util.variables.theme
+                var th = irc.util.themes[theme];
+                irc.util.themes["default"][2] = false;
+                th[2] = true;
+                $('#theme-sheet').attr("href", th[0]);
             }
         },
         
@@ -622,6 +629,7 @@ $(function() {
     var SettingsView = Backbone.View.extend({
         el: $('#settingsframe'),
         tmpl: $('#type-tmpl').html(),
+        tmpl2: $('#theme-tmpl').html(),
         events: {
             'keypress': 'closeKey'
         },
@@ -649,6 +657,7 @@ $(function() {
             });
             
             $('#messageTypes').html('');
+            $('.themelist').html('');
             
             $.each(irc.util.messageTypes, function(i, v) {
                 i = i.toUpperCase();
@@ -658,6 +667,32 @@ $(function() {
                     
                 var html = Mustache.to_html(settings.tmpl, context);
                 $('#messageTypes').append(html);
+            });
+            
+            $.each(irc.util.themes, function(i, v) {
+                var context = { theme: i, themename: v[1], color: v[3] };
+                if(v[2] == true)
+                    context['s'] = true;
+                    
+                var html = Mustache.to_html(settings.tmpl2, context);
+                $('.themelist').append(html);
+            });
+            
+            $('.theme').click(function() {
+                var t = $(this);
+                var d = t.data("theme");
+                var th = irc.util.themes[d];
+                if(th != null) {
+                    if(d != irc.util.variables.theme) {
+                        $(".themelist").find("[data-theme='" + irc.util.variables.theme + "']").removeClass("selected");
+                        irc.util.themes[irc.util.variables.theme][2] = false;
+                        $('#theme-sheet').attr("href", th[0]);
+                        irc.util.variables.theme = d;
+                        th[2] = true;
+                        t.addClass("selected");
+                        settings.saveSettings();
+                    }
+                }
             });
             
             $('.messageType').click(function() {

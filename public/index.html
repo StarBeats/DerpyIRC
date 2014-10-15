@@ -50,10 +50,7 @@
 					<div id="messageTypes"></div><br>
 					<h5>Themes</h5><br>
 					<div class="themelist">
-						<div class="theme selected">
-							<span class="themeview"></span>
-							<span class="themename">Default</span>
-						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -113,6 +110,12 @@
 			</div>
 		</script>
 		
+        <script id="theme-tmpl" type="text/html">
+			<div class="theme {{#s}}selected{{/s}}" data-theme="{{theme}}">
+                <span class="themeview" style="background-color:{{color}};"></span>
+                <span class="themename">{{themename}}</span>
+            </div>
+		</script>
 		<!-- JAVASCRIPT -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
