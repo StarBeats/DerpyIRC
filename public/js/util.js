@@ -216,7 +216,7 @@ window.irc = (function(module) {
     module.util = {
         // Replaces oldString with newString at beginning of text
 		variables: {'dateFormat':'HH:mm:ss', 'showDate':true, 'dateUTC':false},
-		messageTypes: {'join':true, 'part':true, 'nick':true, 'notice':true, 'quit':true, 'mode':true, 'topic':true},
+		messageTypes: {'join':true, 'part':true, 'nick':true, 'notice':true, 'quit':true, 'mode':true, 'topic':true, 'kick':true},
 		toggleTypes: function(type) {
 			if(this.messageTypes[type] == null) 
 				return;

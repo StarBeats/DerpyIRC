@@ -203,31 +203,35 @@ header {
 
 /* Special message types */
 div.join .text{
-	color: green !important;
+	color: green;
 	font-weight: bold;
 }
 div.part .text{
-	color: orange !important;
+	color: orange;
 	font-weight: bold;
 }
 div.nick .text{
-	color: orange !important;
+	color: orange;
 	font-weight: bold;
 }
 div.notice .text{
-	color: orange !important;
+	color: orange;
 	font-weight: bold;
 }
 div.quit .text{
-	color: red !important;
+	color: red;
+	font-weight: bold;
+}
+div.kick .text{
+	color: red;
 	font-weight: bold;
 }
 div.mode .text{
-	color: blue !important;
+	color: blue;
 	font-weight: bold;
 }
 div.topic .text{
-	color: #09F !important;
+	color: #09F;
 	font-weight: bold;
 }
 div.mentioned{
@@ -249,7 +253,6 @@ div.mentioned{
 }
 
 #output .text {
-    color: #222;
     display: block;
     margin-left: 115px;
     margin-bottom: 4px;
