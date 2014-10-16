@@ -528,7 +528,7 @@ label{
 	-ms-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
 	transform: rotate(45deg);
-	}
+}
 
 .messageType.disabled .typeicon:after {
 	left: 1px;
@@ -543,15 +543,16 @@ label{
 	height: 120px;
 	text-align: center;
 	background-color: #AFAFAF;
-	border: 2px solid white;
 	border-radius: 5px;
 	cursor: pointer;
 	border: 1px solid #8A8A8A;
-	margin-right: 5px;
+	margin: 1px 5px 1px 1px;
 }
 
 .themelist .theme.selected, .themelist .theme:hover{
 	border: 2px solid white;
+    margin: 0;
+    margin-right: 4px;
 }
 
 .themelist .theme .themeview{

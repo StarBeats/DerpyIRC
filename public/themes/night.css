@@ -63,3 +63,6 @@ header{
     background-color: #272727;
     border: 1px solid #000000;
 }
+.icon.settings {
+	background-image: url(/images/settings_light.png) !important;
+}

@@ -216,9 +216,28 @@ window.irc = (function(module) {
     module.util = {
         // Replaces oldString with newString at beginning of text
 		variables: {'dateFormat':'HH:mm:ss', 'showDate':true, 'dateUTC':false, 'theme':"default"},
+        
 		messageTypes: {'join':true, 'part':true, 'nick':true, 'notice':true, 'quit':true, 'mode':true, 'topic':true, 'kick':true},
-        themes: {"default":["", "Default", true, "white"], "night":["/themes/night.css", "Night", false, "black"]},
-		toggleTypes: function(type) {
+        themes: {"default":["", "Default", "white"], "night":["/themes/night.css", "Night", "black"]},
+		switchTheme: function(theme, elem) {
+            var targeted = this.themes[theme];
+            if(targeted == null) 
+                return;
+            
+            if(elem != null || elem === true) {
+                $(".themelist").find("[data-theme='" + this.variables.theme + "']").removeClass("selected");
+                $(".themelist").find("[data-theme='" + theme + "']").addClass("selected");
+            }
+            $('#theme-sheet').attr("href", targeted[0]);
+            irc.util.variables.theme = theme;
+        },
+        changeValuesIfPresent: function(arr, targ) {
+            $.each(arr, function(i, v) {
+                if(targ[i] != null)
+                    targ[i] = v;
+            });
+        },
+        toggleTypes: function(type) {
 			if(this.messageTypes[type] == null) 
 				return;
 			var sheet = this.getStyleSheetById(document.styleSheets, "custom-styles");
@@ -312,8 +331,26 @@ window.irc = (function(module) {
 				case "v":
 					prefix = "+";
 					break;
-				default:
-					prefix = "";
+			}
+			return prefix;
+		},
+        getModeFromPrefix: function(mode) {
+			var prefix = "";
+			switch(mode) {
+				case "~":
+					prefix = "q";
+					break;
+				case "&":
+					prefix = "a";
+					break;
+				case "@":
+					prefix = "o";
+					break;
+				case "%":
+					prefix = "h";
+					break;
+				case "+":
+					prefix = "v";
 					break;
 			}
 			return prefix;

@@ -577,16 +577,11 @@ $(function() {
                 var it = localStorage.getItem("settings");
                 if(it) {
                     var parsed = JSON.parse(it);
-                    if(parsed.dateFormat!=null && parsed.showDate!=null && parsed.dateUTC!=null && parsed.theme!=null)
-                        irc.util.variables = parsed;
+                    irc.util.changeValuesIfPresent(parsed, irc.util.variables);
                 }
             }
             if(irc.util.variables.theme !== "default") {
-                var theme = irc.util.variables.theme
-                var th = irc.util.themes[theme];
-                irc.util.themes["default"][2] = false;
-                th[2] = true;
-                $('#theme-sheet').attr("href", th[0]);
+                irc.util.switchTheme(irc.util.variables.theme);
             }
         },
         
@@ -637,7 +632,16 @@ $(function() {
         initialize: function() {},
         
         render: function() {
+            var visibl = false;
+            
+            if(this.el.is(':visible'))
+                visibl = true;
+            
             this.el.fadeToggle('fast');
+            
+            if(visibl === true)
+                return;
+            
             $('#stn-timestamp').val(irc.util.variables.dateFormat);
             $('#stn-timestamp').focusout(function() {
                 irc.util.variables.dateFormat = $('#stn-timestamp').val();
@@ -670,8 +674,8 @@ $(function() {
             });
             
             $.each(irc.util.themes, function(i, v) {
-                var context = { theme: i, themename: v[1], color: v[3] };
-                if(v[2] == true)
+                var context = { theme: i, themename: v[1], color: v[2] };
+                if(irc.util.variables.theme === i)
                     context['s'] = true;
                     
                 var html = Mustache.to_html(settings.tmpl2, context);
@@ -684,12 +688,7 @@ $(function() {
                 var th = irc.util.themes[d];
                 if(th != null) {
                     if(d != irc.util.variables.theme) {
-                        $(".themelist").find("[data-theme='" + irc.util.variables.theme + "']").removeClass("selected");
-                        irc.util.themes[irc.util.variables.theme][2] = false;
-                        $('#theme-sheet').attr("href", th[0]);
-                        irc.util.variables.theme = d;
-                        th[2] = true;
-                        t.addClass("selected");
+                        irc.util.switchTheme(d, true);
                         settings.saveSettings();
                     }
                 }
@@ -922,6 +921,7 @@ $(function() {
                 modemsg.setText();
                 buffr.stream.add(modemsg);
                 if(buffr.participants && buffr.participants.getByNick(data.argument)) {
+                    // TODO: Remove this stupid work-around
                     if((buffr.participants.getByNick(data.argument).get("opStatus") === "~" || buffr.participants.getByNick(data.argument).get("opStatus") === "&") && data.mode === "o")
                         return;
                     else
