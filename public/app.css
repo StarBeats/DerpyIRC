@@ -320,8 +320,11 @@ div.mentioned{
 }
 
 .timestamp {
-	float: left;
-	margin-right: 5px;
+    float: left;
+    margin-right: 5px;
+    display: inline-block;
+    width: 70px;
+    overflow: hidden;
 }
 
 .modal-body{
@@ -617,7 +620,7 @@ label{
 .fg14 { color: grey; }
 .fg15 { color: lightgrey; }
 
-.pills > li { margin-right: 6px; }
+.pills > li { margin-right: 2px; display: inline-block; }
 .pills > li > * { float: left; }
 
 .pills > li > a {

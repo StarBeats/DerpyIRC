@@ -428,6 +428,9 @@ $(function() {
                 case 'me':
                     revised = 'action';
                     break;
+                case 'raw':
+                    revised = 'quote';
+                    break;
                 default:
                     revised = command;
                     break;
@@ -454,6 +457,9 @@ $(function() {
                         frames.add(pm);
                     }
                     socket.emit('command', ["privmsg", msgParts[1], msgParts.slice(2).join(" ")]);
+                } else if (msgParts[0].toLowerCase() === 'quote') {
+                    console.log(msgParts);
+                    socket.emit("quote", {command:msgParts[1], args:msgParts.slice(2).join(" ")});
                 } else if (msgParts[0].toLowerCase() === 'join') {
                     socket.emit('join', msgParts[1]);
                 } else if (msgParts[0].toLowerCase() === 'part') {
@@ -761,8 +767,8 @@ $(function() {
         }
         
         if(irc.util.variables.showDate === true) {
-            $('.gutter').css('width', "170px");
-            rules[0].style["margin-left"] = '170px';
+            $('.gutter').css('width', "185px");
+            rules[0].style["margin-left"] = '185px';
         } else {
             $('.gutter').css('width', "110px");
             rules[0].style["margin-left"] = '115px';
@@ -817,6 +823,7 @@ $(function() {
                 statusbuffer.stream.add(rawMessage);
             }
         }
+        console.log(input);
     });
     
     // Private message event
@@ -865,15 +872,22 @@ $(function() {
 
     // Part channel event
     socket.on('part', function(data) {
-        if (data.nick == irc.me.get('nick')) {
-            // TODO: something about this
+        if (data.nick === irc.me.get('nick')) {
+            channel = frames.getByName(data.channel);
+            if(channel) {
+                var partMessage = new Message({type: 'part', nick: data.nick, raw: data.reason});
+                partMessage.setText();
+                channel.stream.add(partMessage);
+                channel.stream.add({type: 'error', raw: "You are no longer talking in "+channel.get("name")});
+                channel.participants.reset();
+            }
         } else {
             channel = frames.getByName(data.channel);
             channel.participants.getByNick(data.nick).destroy();
             var partMessage = new Message({type: 'part', nick: data.nick, raw: data.reason});
             partMessage.setText();
             channel.stream.add(partMessage);
-            if(channel.get("active"))
+            if(channel.get("active") === channel)
                 nickList.update(channel.participants);
         }
     });
@@ -967,6 +981,9 @@ $(function() {
                 notice.setText();
                 deff.stream.add(notice);
             }
+        }
+        if(data.nick.toLowerCase() === "nickserv" && data.text.toLowerCase().contains("/msg nickserv identify") && irc.me.get("nickserv") != null) {
+            socket.emit('say', {target: "nickserv", message: "identify "+irc.me.get("nickserv")});
         }
     });
     

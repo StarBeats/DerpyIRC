@@ -289,7 +289,7 @@ window.irc = (function(module) {
 		WhoisOp: function(names) {
 			var ops = [];
 			names.forEach(function(e) {
-				if(e.startsWith("~") || e.startsWith("&") || e.startsWith("@") || e.startsWith("%"))
+				if(e.startsWith("~") || e.startsWith("&") || e.startsWith("@"))
 					ops.push(e);
 			});
 			return ops;

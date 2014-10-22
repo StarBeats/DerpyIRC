@@ -53,7 +53,8 @@ io.on('connection', function(socket) {
         socket.on('changenick', function(newnick) { client.send("NICK", newnick); });
         socket.on('ircdisconnect', function(text) { client.disconnect(text); });
         socket.on('swhois', function(a) { client.whois(a); });
-        socket.on('topic', function(a) { client.send('TOPIC', a.channel, a.topic); });
+        socket.on('topic', function(a) { client.send('TOPIC', a.channel + " "+a.topic); });
+        socket.on('quote', function(a) { client.send(a.command, a.args); });
         
         socket.on('disconnect', function() {client.disconnect("DerpyIRC - Chat for the derpy"); });
         

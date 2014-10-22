@@ -3,6 +3,10 @@
   "description": "Web IRC client for pony fans",
   "author": "Evert Prants",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/LunaSquee/DerpyIRC.git"
+  },
   "dependencies": {
     "connect": "2.14.x",
     "irc": "0.3.x",
