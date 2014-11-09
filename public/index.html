@@ -50,7 +50,7 @@
 					<div id="messageTypes"></div><br>
 					<h5>Themes</h5><br>
 					<div class="themelist"></div><br>
-                    <i><small>Some settings will apply once you switch the chat tab.<small></i><br>
+                    <i><small>Some settings will apply once you switch the chat tab.</small></i><br>
 				</div>
 			</div>
 		</div>
@@ -79,6 +79,11 @@
 						<input type="text" id="connect-server" name="server" value="irc.bsnet.se">
 						<label for="connect-server-port">Port</label>
 						<input type="text" id="connect-server-port" name="server-port" value="6667">
+                        <a id="server-pass" href="#" onclick="$('#server-pass-container').slideToggle();">Use a password</a><br>
+                        <div id="server-pass-container" style="display:none">
+                            <label for="connect-server-pass">Password</label>
+                            <input type="password" id="connect-server-pass" name="server-pass">
+                        </div>
 						<label for="connect-secure">SSL</label> 
 						<input type="checkbox" id="connect-secure" name="secure" style="float: left; margin: 7px 7px 7px 15px;">
 					</div>

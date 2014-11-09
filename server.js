@@ -1,13 +1,34 @@
 #!/usr/bin/env node
 
+/* OLD (with connect) ("connect": "2.14.x")
 var connect = require('connect'),
     dir = __dirname+"/public",
     app = connect.createServer(connect.static(dir)).listen(8337),
     io = require('socket.io')(app),
     irc = require('irc'),
+    debugmode = true;*/
+    
+var express = require('express'),
+    irc = require('irc'),
+    app = express(),
+    server = require('http').Server(app),
+    io = require('socket.io')(server);
+    dir = __dirname+"/public",
     debugmode = false;
 
-console.log('DerpyIRC started on port %s', app.address().port);
+server.listen(8337);
+
+app.use(express.static(dir));
+
+app.get('/', function (req, res) {
+    res.sendFile(dir + '/index.html');
+});
+
+app.use(function(req, res, next){
+    res.status(404).send('404 Not found.');
+});
+
+console.log("DerpyIRC started.");
 
 // Socket.IO
 io.on('connection', function(socket) {
@@ -33,11 +54,15 @@ io.on('connection', function(socket) {
         var client = new irc.Client(data.server, data.nick, {
             showErrors: debugmode,
             channels: data.channels,
+            port: data.port,
             autoRejoin: false,
             debug: debugmode,
             secure: data.secure,
+            password: data.serverpassword,
             userName: (data.nick.toLowerCase().length > 10 ? data.nick.toLowerCase().substring(0, 10) : data.nick.toLowerCase()),
-            realName: 'DerpyIRC'
+            realName: 'DerpyIRC',
+            certExpired: true,
+            selfSigned: true
         });
         
         var sendRaw = function(args) {

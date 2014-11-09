@@ -274,7 +274,7 @@ $(function() {
         focus: function(frame) {
             // Save scroll position for frame before switching
             if (this.focused) {
-                this.position[this.focused.get('name')] = this.$('#output').scrollTop();
+                this.position[this.focused.get('name')] = $('#output #messages').scrollTop();
             }
             this.focused = frame;
             frames.setActive(this.focused);
@@ -294,9 +294,10 @@ $(function() {
                 this.$('#topic').hide();
             }
             $(this.el).removeClass().addClass(frame.get('type'));
-
-            this.$('#output #messsages').scrollTop(this.position[frame.get('name')] || 0);
-
+            var position = this.position[frame.get('name')];
+            
+            $('#output #messages').scrollTop((position ? position : 0));
+            
             // Only the selected frame should send messages
             frames.each(function(frm) {
                 frm.stream.unbind('add');
@@ -569,6 +570,7 @@ $(function() {
             var nickd = irc.util.getURLParam("nick");
             var chand = window.location.hash;
             var served = irc.util.getURLParam("server");
+            var portd = irc.util.getURLParam("port");
             
             if(nickd)
                 $('#connect-nick').val(nickd.replace("?", Math.floor(Math.random() * 6000) + 1));
@@ -576,6 +578,8 @@ $(function() {
                 $('#connect-channels').val(chand);
             if(served)
                 $('#connect-server').val(served);
+            if(portd)
+                $('#connect-server-port').val(portd);
         },
         
         getUserSettings: function() {
@@ -605,6 +609,7 @@ $(function() {
                 nick: $('#connect-nick').val(),
                 server: $('#connect-server').val(),
                 port: $('#connect-server-port').val(),
+                serverpassword: $('#connect-server-pass').val(),
                 secure: $('#connect-secure').is(':checked'),
                 channels: channels
             };
@@ -742,6 +747,9 @@ $(function() {
                 break;
             case 'err_cannotsendtochan':
                 text = 'Failed to send message to channel';
+                break;
+            case 'err_passwdmismatch':
+                text = 'Incorrect Password.';
                 break;
             default:
                 text = message.args[2];
@@ -982,7 +990,7 @@ $(function() {
                 deff.stream.add(notice);
             }
         }
-        if(data.nick.toLowerCase() === "nickserv" && data.text.toLowerCase().contains("/msg nickserv identify") && irc.me.get("nickserv") != null) {
+        if((data.nick && data.text) && (data.nick.toLowerCase() === "nickserv" && data.text.toLowerCase().contains("/msg nickserv identify") && irc.me.get("nickserv") != null)) {
             socket.emit('say', {target: "nickserv", message: "identify "+irc.me.get("nickserv")});
         }
     });

@@ -8,14 +8,13 @@
     "url": "git://github.com/LunaSquee/DerpyIRC.git"
   },
   "dependencies": {
-    "connect": "2.14.x",
     "irc": "0.3.x",
-    "socket.io": "1.1.x"
+    "socket.io": "1.1.x",
+    "express": "~4.10.1"
   },
   "bin": {
     "derpyirc": "./server.js"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "engine": "node >= 0.4.x"
 }
