@@ -42,6 +42,18 @@ h1,h2,h3,h4,h5{
 	background:linear-gradient(to bottom,rgb(255, 255, 255) 0%,rgb(238, 238, 238) 100%);
 }
 
+a:visited {
+    color: rgb(0, 139, 255);
+}
+
+a {
+    color: blue;
+}
+
+a:visited{
+    color: green;
+}
+
 a .butto{
 	color: #333;
 }
@@ -165,15 +177,29 @@ header {
 }
 
 #output #topic {
-    position: relative;
-    min-height: 20px;
+    position: absolute;
+    height: 20px;
     padding: 5px;
-	text-align: center;
-	overflow: hidden;
+    text-align: center;
+    overflow: hidden;
     background-color: #e2e2e2;
     border-bottom: 1px solid #444;
     display: none;
-    z-index: 2;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+}
+#output #topic:hover{
+    max-height:80px;
+    min-height:20px;
+    white-space: initial;
+    height: auto;
+    -webkit-transition: max-height linear 0.1s;
+	-moz-transition: max-height linear 0.1s;
+	-ms-transition: max-height linear 0.1s;
+	-o-transition: max-height linear 0.1s;
+	transition: max-height linear 0.1s;
 }
 
 #output #messages {
@@ -189,8 +215,8 @@ header {
 
 #frame .gutter {
     position: absolute;
-    background-color: #e2e2e2;
-    border-right: 1px solid #888;
+    background-color: #F5F5F5;
+    border-right: 2px solid #D8D8D8;
     width: 110px;
     left: 0;
     top: 0;
@@ -278,18 +304,18 @@ div.mentioned{
 #sidebar .actions {
 	position: relative;
 	top: 0;
-	height: 40px;
+	height: 30px;
 	background-color: #e2e2e2;
 	border-bottom: 1px solid #888;
 	text-align: center;
-	line-height: 40px;
+	line-height: 30px;
 }
 
 #sidebar .nicks {
     position: absolute;
     overflow: auto;
     padding: 5px;
-    top: 40px;
+    top: 30px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -390,6 +416,7 @@ div.mentioned{
 	cursor: pointer;
 	text-decoration: none;
 	margin-top: 10px;
+    color: white !important;
 }
 
 .customButton:hover{
@@ -397,7 +424,7 @@ div.mentioned{
 	background: -o-linear-gradient(#003DFF, #001AA2);
 	background: -moz-linear-gradient(#003DFF, #001AA2);
 	background: linear-gradient(#003DFF, #001AA2);
-	color: rgb(0, 235, 255);
+	color: rgb(0, 235, 255) !important;
 }
 
 .tog_key{

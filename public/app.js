@@ -770,8 +770,10 @@ $(function() {
         
         if($('#sidebar').css("display") !== "none") {
             $('#messages').css('right', "205px");
+            $('#topic').css('right', "200px");
         } else {
             $('#messages').css('right', "0");
+            $('#topic').css('right', "0");
         }
         
         if(irc.util.variables.showDate === true) {

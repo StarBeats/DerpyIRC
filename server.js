@@ -14,7 +14,7 @@ var express = require('express'),
     server = require('http').Server(app),
     io = require('socket.io')(server);
     dir = __dirname+"/public",
-    debugmode = false;
+    debugmode = true;
 
 server.listen(8337);
 
