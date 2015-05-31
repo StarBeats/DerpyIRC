@@ -403,7 +403,7 @@ window.irc = (function(module) {
 		},
 		ParseColors: function(text) {
 			//control codes
-			var rex = /\003([0-9]{1,2})[,]?([0-9]{1,2})?([^\003]+)/,matches,colors;
+			var rex = /\003([0-9]{1,2})(?:[,]{1}([0-9]{1,2}){1})?([^\003]+)/,matches,colors;
 			if (rex.test(text)) {
 				while (cp = rex.exec(text)) {
 					if (cp[2]) {

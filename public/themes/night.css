@@ -4,7 +4,6 @@
 body{
     color: white;
     background-color: #242424;
-    font-family:monospace;
 }
 header{
     background: #585858;
@@ -81,4 +80,10 @@ header{
 }
 .icon.settings {
 	background-image: url(/images/settings_light.png) !important;
+}
+div.mode .text{
+    color: #565EFF !important;
+}
+.fg12 {
+    color: #565EFF !important;
 }

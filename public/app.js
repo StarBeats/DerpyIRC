@@ -111,7 +111,8 @@ $(function() {
     var Frame = Backbone.Model.extend({
         defaults: {
             'type': 'channel',
-            'active': true
+            'active': true,
+            'server':''
         },
 
         initialize: function() {
@@ -130,6 +131,13 @@ $(function() {
         getByName: function(name) {
             return this.detect(function(frame) {
                 if(frame.get('name').toLowerCase() === name.toLowerCase())
+                    return frame;
+            });
+        },
+
+        getByServer: function(name) {
+            return this.detect(function(frame) {
+                if(frame.get('server').toLowerCase() === name.toLowerCase())
                     return frame;
             });
         },
@@ -527,7 +535,7 @@ $(function() {
                             socket.emit("changenick", message);
                     }
                 } else {
-                    socket.emit('command', msgParts);
+                    socket.emit('command', msgParts.join(" "));
                 }
             } else {
                 socket.emit('say', {
@@ -609,23 +617,24 @@ $(function() {
                 nick: $('#connect-nick').val(),
                 server: $('#connect-server').val(),
                 port: $('#connect-server-port').val(),
-                serverpassword: $('#connect-server-pass').val(),
+                password: $('#connect-server-pass').val().isEmpty() ? null : $('#connect-server-pass').val(),
                 secure: $('#connect-secure').is(':checked'),
                 channels: channels
             };
 
             socket.emit('ircconnection', connectInfo);
-            $('#connect').hide();
 
             irc.me = new Person({nick: connectInfo.nick});
             
+            $('#notify').show();
+
             if(!$('#nickserv-pass').val().isEmpty())
                 irc.me.set({nickserv:$('#nickserv-pass').val()});
                 
             irc.frameWindow = new FrameView;
             irc.app = new AppView;
             // Create the status "frame"
-            frames.add({name: 'status', type: 'status'});
+            frames.add({name: 'status', type: 'status', server:connectInfo.server});
         }
         
     });
@@ -1033,6 +1042,10 @@ $(function() {
     // On socket disconnected
     socket.on('disconnect', function(data) {});
     
+    socket.on('serverconnected', function(network, vars, data) {
+        $('#connect').hide();
+    });
+
     // Server error event
     socket.on('errorevent', function(data) {
         console.log(data);
